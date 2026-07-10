@@ -1,0 +1,31 @@
+@media(max-width:768px){
+
+    nav{
+
+        flex-wrap:wrap;
+
+        gap:10px;
+
+    }
+
+    .login-container,
+    .auth-container{
+
+        width:90%;
+
+    }
+
+    .filters{
+
+        flex-direction:column;
+
+    }
+
+    table{
+
+        display:block;
+        overflow-x:auto;
+
+    }
+
+}

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Dashboard
+    </title>
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link rel="stylesheet"
+    href="css/style.css">
+
+    <link rel="stylesheet"
+    href="css/responsive.css">
+
+    <link rel="stylesheet"
+    href="css/dashboard.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+
+<body>
+
+<div class="dashboard-layout">
+
+
+    <!-- Sidebar -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <h2>
+                TaskFlow
+            </h2>
+
+        </div>
+
+
+        <ul>
+
+            <li>
+                <a href="dashboard.html">
+
+                    <i class="fas fa-chart-line"></i>
+
+                    Dashboard
+
+                </a>
+            </li>
+
+
+            <li>
+                <a href="projects.html">
+
+                    <i class="fas fa-folder"></i>
+
+                    Projects
+
+                </a>
+            </li>
+
+
+            <li>
+                <a href="tasks.html">
+
+                    <i class="fas fa-list-check"></i>
+
+                    Tasks
+
+                </a>
+            </li>
+
+
+            <li>
+                <a href="kanban.html">
+
+                    <i class="fas fa-table-columns"></i>
+
+                    Kanban
+
+                </a>
+            </li>
+
+
+            <li>
+                <a href="analytics.html">
+
+                    <i class="fas fa-chart-pie"></i>
+
+                    Analytics
+
+                </a>
+            </li>
+
+
+            <li>
+                <a href="users.html">
+
+                    <i class="fas fa-users"></i>
+
+                    Team
+
+                </a>
+            </li>
+
+
+            <li>
+                <a href="#"
+                onclick="toggleTheme()">
+
+                    <i class="fas fa-moon"></i>
+
+                    Dark Mode
+
+                </a>
+            </li>
+
+
+            <li>
+                <a href="#"
+                onclick="logout()">
+
+                    <i class="fas fa-right-from-bracket"></i>
+
+                    Logout
+
+                </a>
+            </li>
+
+        </ul>
+
+    </aside>
+
+
+
+    <!-- Main Content -->
+
+    <main class="main-content">
+
+
+        <!-- Topbar -->
+
+        <div class="topbar">
+
+            <h1>
+                Enterprise Dashboard
+            </h1>
+
+
+            <div class="topbar-right">
+
+                <button class="icon-btn">
+
+                    <i class="fas fa-bell"></i>
+
+                </button>
+
+
+                <<button
+class="icon-btn"
+onclick="toggleTheme()">
+
+    <i class="fas fa-moon"></i>
+
+</button>
+
+
+            </div>
+
+        </div>
+
+
+
+        <!-- Dashboard Cards -->
+
+        <div class="cards">
+
+            <div class="card">
+
+                <h3>
+                    Total Tasks
+                </h3>
+
+                <p id="totalTasks">
+                    0
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>
+                    Completed
+                </h3>
+
+                <p id="completedTasks">
+                    0
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>
+                    Pending
+                </h3>
+
+                <p id="pendingTasks">
+                    0
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>
+                    Total Projects
+                </h3>
+
+                <p id="totalProjects">
+                    0
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>
+                    Completion Rate
+                </h3>
+
+                <p id="completionRate">
+                    0%
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- Analytics Chart -->
+
+        <div class="chart-section">
+
+            <h2>
+                Task Performance
+            </h2>
+
+            <canvas id="taskChart"></canvas>
+
+        </div>
+
+
+
+        <!-- Recent Activity -->
+
+        <div class="activity-section">
+
+            <h2>
+                Recent Activity
+            </h2>
+
+            <ul id="recentActivity">
+
+                <li>
+                    Dashboard Loaded
+                </li>
+
+            </ul>
+
+        </div>
+
+
+    </main>
+
+</div>
+
+
+
+<script src="js/storage.js"></script>
+
+<script src="js/app.js"></script>
+
+<script src="js/dashboard.js"></script>
+
+</body>
+
+</html>

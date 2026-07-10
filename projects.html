@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Projects</title>
+
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/projects.css">
+    <link rel="stylesheet" href="css/responsive.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h1>
+        Project Management
+    </h1>
+
+</header>
+
+
+
+
+<nav>
+
+    <a href="index.html">
+        Home
+    </a>
+
+    <a href="dashboard.html">
+        Dashboard
+    </a>
+
+    <a href="tasks.html">
+        Tasks
+    </a>
+
+    <a href="projects.html">
+        Projects
+    </a>
+
+    <a href="kanban.html">
+        Kanban Board
+    </a>
+
+    <a href="#" onclick="logout()">
+        Logout
+    </a>
+
+</nav>
+
+
+
+
+
+<div class="container">
+
+
+<h2>
+    Create Project
+</h2>
+
+
+
+<form id="projectForm">
+
+
+<input
+type="text"
+id="projectName"
+placeholder="Enter Project Name"
+required
+>
+
+
+<button type="submit">
+Add Project
+</button>
+
+
+
+</form>
+
+
+
+
+
+<hr>
+
+
+
+
+
+<h2>
+    Project List
+</h2>
+
+
+
+
+<div id="projectContainer"
+class="project-container">
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+<script src="js/storage.js"></script>
+<script src="js/app.js"></script>
+<script src="js/project.js"></script>
+<
+
+
+</body>
+
+</html>
