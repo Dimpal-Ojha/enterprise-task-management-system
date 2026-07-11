@@ -1,173 +1,293 @@
-<!DOCTYPE html>
-<html lang="en">
+// =========================
+// LOGIN CHECK
+// =========================
 
-<head>
+if(localStorage.getItem("loggedIn") !== "true"){
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    window.location.href = "login.html";
 
-<title>Kanban Board - TaskFlow</title>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/dashboard.css">
-<link rel="stylesheet" href="css/tasks.css">
-<link rel="stylesheet" href="css/responsive.css">
-
-</head>
-
-<body>
-
-<div class="dashboard-layout">
-
-<aside class="sidebar">
-
-<div class="logo">
-<h2>TaskFlow</h2>
-</div>
-
-<ul>
-
-<li>
-<a href="dashboard.html">
-<i class="fas fa-chart-line"></i>
-Dashboard
-</a>
-</li>
-
-<li>
-<a href="projects.html">
-<i class="fas fa-folder"></i>
-Projects
-</a>
-</li>
-
-<li>
-<a href="tasks.html">
-<i class="fas fa-list-check"></i>
-Tasks
-</a>
-</li>
-
-<li>
-<a href="kanban.html">
-<i class="fas fa-table-columns"></i>
-Kanban
-</a>
-</li>
-
-<li>
-<a href="analytics.html">
-<i class="fas fa-chart-pie"></i>
-Analytics
-</a>
-</li>
-
-<li>
-<a href="users.html">
-<i class="fas fa-users"></i>
-Team
-</a>
-</li>
-
-<li>
-<a href="#" onclick="toggleTheme()">
-<i class="fas fa-moon"></i>
-Dark Mode
-</a>
-</li>
-
-<li>
-<a href="#" onclick="logout()">
-<i class="fas fa-right-from-bracket"></i>
-Logout
-</a>
-</li>
-
-</ul>
-
-</aside>
+}
 
 
-<main class="main-content">
+// =========================
+// LOAD TASKS
+// =========================
+
+let tasks =
+JSON.parse(localStorage.getItem("tasks")) || [];
+
+console.log("Tasks Loaded:", tasks);
 
 
-<div class="topbar">
+// =========================
+// COLUMNS
+// =========================
 
-<h1>
-Kanban Board
-</h1>
+const todo =
+document.getElementById("todo");
+
+const progress =
+document.getElementById("progress");
+
+const done =
+document.getElementById("done");
 
 
-<div class="topbar-right">
-
-<button class="icon-btn">
-<i class="fas fa-bell"></i>
-</button>
+let draggedTaskId = null;
 
 
-<button class="icon-btn" onclick="toggleTheme()">
-<i class="fas fa-moon"></i>
-</button>
+// =========================
+// RENDER BOARD
+// =========================
 
-</div>
+function renderBoard(){
 
-</div>
+
+    todo.innerHTML = "";
+
+    progress.innerHTML = "";
+
+    done.innerHTML = "";
 
 
 
-<div class="board">
+    tasks.forEach(task=>{
 
 
-<div class="column" data-status="To Do">
-
-<h2>
-To Do
-</h2>
-
-<div id="todo" class="task-container"></div>
-
-</div>
+        const today =
+        new Date()
+        .toISOString()
+        .split("T")[0];
 
 
 
-<div class="column" data-status="In Progress">
-
-<h2>
-In Progress
-</h2>
-
-<div id="progress" class="task-container"></div>
-
-</div>
+        const isOverdue =
+        task.dueDate &&
+        task.status !== "Done" &&
+        task.dueDate < today;
 
 
 
-<div class="column" data-status="Done">
-
-<h2>
-Done
-</h2>
-
-<div id="done" class="task-container"></div>
-
-</div>
+        const card =
+        document.createElement("div");
 
 
-</div>
+
+        card.className =
+        "task-card";
 
 
-</main>
+
+        if(isOverdue){
+
+            card.classList.add(
+                "overdue"
+            );
+
+        }
 
 
-</div>
+
+        card.draggable = true;
+
+        card.dataset.id =
+        task.id;
 
 
-<script src="js/storage.js"></script>
-<script src="js/app.js"></script>
-<script src="js/kanban.js"></script>
 
-</body>
+        let priorityClass =
+        "priority-low";
 
-</html>
+
+
+        if(task.priority === "Critical"){
+
+            priorityClass =
+            "priority-critical";
+
+        }
+
+        else if(task.priority === "High"){
+
+            priorityClass =
+            "priority-high";
+
+        }
+
+        else if(task.priority === "Medium"){
+
+            priorityClass =
+            "priority-medium";
+
+        }
+
+
+
+        card.innerHTML = `
+
+        <h3>
+        ${task.title}
+        </h3>
+
+
+        <p>
+        <strong>Project:</strong>
+        ${task.project || "-"}
+        </p>
+
+
+        <p class="${priorityClass}">
+        <strong>Priority:</strong>
+        ${task.priority}
+        </p>
+
+
+        <p>
+        <strong>Due:</strong>
+        ${task.dueDate || "-"}
+        </p>
+
+
+        <p>
+        <strong>Assigned:</strong>
+        ${task.assignee || "Unassigned"}
+        </p>
+
+
+        <p>
+        ${task.description || ""}
+        </p>
+
+
+        ${
+            isOverdue
+            ?
+            `
+            <p class="priority-high">
+            ⚠️ OVERDUE
+            </p>
+            `
+            :
+            ""
+        }
+
+
+        `;
+
+
+
+        card.addEventListener(
+            "dragstart",
+            ()=>{
+
+                draggedTaskId =
+                task.id;
+
+            }
+        );
+
+
+
+        if(task.status === "To Do"){
+
+            todo.appendChild(card);
+
+        }
+
+
+        else if(task.status === "In Progress"){
+
+            progress.appendChild(card);
+
+        }
+
+
+        else if(task.status === "Done"){
+
+            done.appendChild(card);
+
+        }
+
+
+    });
+
+
+}
+
+
+
+// =========================
+// INITIAL LOAD
+// =========================
+
+renderBoard();
+
+
+
+// =========================
+// DRAG DROP
+// =========================
+
+const columns =
+document.querySelectorAll(".column");
+
+
+
+columns.forEach(column=>{
+
+
+    column.addEventListener(
+        "dragover",
+        e=>{
+
+            e.preventDefault();
+
+        }
+    );
+
+
+
+    column.addEventListener(
+        "drop",
+        ()=>{
+
+
+            const newStatus =
+            column.dataset.status;
+
+
+
+            tasks =
+            tasks.map(task=>{
+
+
+                if(task.id == draggedTaskId){
+
+                    task.status =
+                    newStatus;
+
+                }
+
+
+                return task;
+
+
+            });
+
+
+
+            localStorage.setItem(
+                "tasks",
+                JSON.stringify(tasks)
+            );
+
+
+
+            renderBoard();
+
+
+        }
+    );
+
+
+});
