@@ -1,11 +1,16 @@
 // =========================
-// LOGIN CHECK
+// AUTH CHECK
 // =========================
+
 
 function checkLogin(){
 
+
     const loggedIn =
-    localStorage.getItem("loggedIn");
+    localStorage.getItem(
+        "loggedIn"
+    );
+
 
     if(loggedIn !== "true"){
 
@@ -18,24 +23,33 @@ function checkLogin(){
 
 
 
+
+
 // =========================
 // LOGOUT
 // =========================
 
+
 function logout(){
+
 
     localStorage.removeItem(
         "loggedIn"
     );
 
+
     localStorage.removeItem(
         "currentUser"
     );
 
+
     window.location.href =
     "login.html";
 
+
 }
+
+
 
 
 
@@ -43,100 +57,153 @@ function logout(){
 // CURRENT USER
 // =========================
 
+
 function getCurrentUser(){
 
+
     return JSON.parse(
+
         localStorage.getItem(
             "currentUser"
         )
+
     );
+
 
 }
 
 
 
+
+
 // =========================
-// DARK MODE
+// THEME MANAGEMENT
 // =========================
 
+
 function toggleTheme(){
+
 
     document.body.classList.toggle(
         "dark-mode"
     );
 
-    if(
-        document.body.classList.contains(
-            "dark-mode"
-        )
-    ){
 
-        localStorage.setItem(
-            "theme",
-            "dark"
-        );
+    const theme =
+    document.body.classList.contains(
+        "dark-mode"
+    )
+    ?
+    "dark"
+    :
+    "light";
 
-    }
 
-    else{
 
-        localStorage.setItem(
-            "theme",
-            "light"
-        );
+    localStorage.setItem(
+        "theme",
+        theme
+    );
 
-    }
 
 }
 
 
 
+
+
 // =========================
-// LOAD SAVED THEME
+// LOAD THEME
 // =========================
 
-window.addEventListener(
-"load",
-function(){
 
-    const theme =
+function loadTheme(){
+
+
+    const savedTheme =
     localStorage.getItem(
         "theme"
     );
 
-    if(theme === "dark"){
+
+
+    if(savedTheme === "dark"){
+
 
         document.body.classList.add(
             "dark-mode"
         );
 
+
     }
 
-});
-
-
-
-// =========================
-// AUTO CHECK LOGIN
-// =========================
-
-const currentPage =
-window.location.pathname;
-
-if(
-!currentPage.includes(
-"login.html"
-)
-&&
-!currentPage.includes(
-"register.html"
-)
-&&
-!currentPage.includes(
-"forgot-password.html"
-)
-){
-
-    checkLogin();
 
 }
+
+
+
+
+
+// =========================
+// PAGE PROTECTION
+// =========================
+
+
+function protectPage(){
+
+
+    const publicPages = [
+
+        "login.html",
+
+        "register.html",
+
+        "forgot-password.html"
+
+    ];
+
+
+
+    const currentPage =
+    window.location.pathname;
+
+
+
+    const isPublic =
+    publicPages.some(
+        page =>
+        currentPage.includes(page)
+    );
+
+
+
+    if(!isPublic){
+
+        checkLogin();
+
+    }
+
+
+}
+
+
+
+
+
+// =========================
+// INIT APP
+// =========================
+
+
+window.addEventListener(
+"DOMContentLoaded",
+()=>{
+
+
+    loadTheme();
+
+
+    protectPage();
+
+
+});
