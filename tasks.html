@@ -1,114 +1,237 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tasks - Task Management System</title>
-
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/tasks.css">
-    <link rel="stylesheet" href="css/responsive.css">
+<meta charset="UTF-8">
+<meta name="viewport" 
+content="width=device-width, initial-scale=1.0">
+<title>
+Tasks - TaskFlow
+</title>
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet"
+href="css/style.css">
+<link rel="stylesheet"
+href="css/tasks.css">
+<link rel="stylesheet"
+href="css/responsive.css">
 </head>
 <body>
-
-    <header>
-        <h1>Task Management System</h1>
-    </header>
-
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="tasks.html">Tasks</a>
-        <a href="projects.html">Projects</a>
-        <a href="kanban.html">Kanban Board</a>
-        <a href="#" onclick="logout()">Logout</a>
-    </nav>
-    <div class="container">
-
-        <h2>Create Task</h2>
-
-        <form id="taskForm">
-
-            <input
-                type="text"
-                id="title"
-                placeholder="Task Title"
-                required
-            >
-
-            <select id="priority">
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
-            </select>
-
-            <select id="project" required>
-                <option value="">Select Project</option>
-            </select>
-
-            <input
-                type="date"
-                id="dueDate"
-            >
-
-            <textarea
-                id="description"
-                placeholder="Task Description"
-                rows="3"
-            ></textarea>
-
-            <button type="submit">
-                Add Task
-            </button>
-
-        </form>
-
-        <hr>
-
-        <h2>Search & Filter</h2>
-
-        <div class="filters">
-
-            <input
-                type="text"
-                id="search"
-                placeholder="Search Tasks..."
-            >
-
-            <select id="filterPriority">
-                <option value="All">All Priorities</option>
-                <option value="High">High</option>
-                <option value="Medium">Medium</option>
-                <option value="Low">Low</option>
-            </select>
-
-        </div>
-
-        <hr>
-
-        <h2>Task List</h2>
-
-        <table>
-
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Priority</th>
-                    <th>Project</th>
-                    <th>Due Date</th>
-                    <th>Description</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-
-            <tbody id="taskList"></tbody>
-
-        </table>
-
-    </div>
-
-    <script src="js/storage.js"></script>
+<div class="dashboard-layout">
+<!-- ================= SIDEBAR ================= -->
+<aside class="sidebar">
+<div class="logo">
+<h2>
+<i class="fas fa-layer-group"></i>
+TaskFlow
+</h2>
+</div>
+<ul>
+<li>
+<a href="dashboard.html">
+<i class="fas fa-chart-line"></i>
+Dashboard
+</a>
+</li>
+<li>
+<a href="projects.html">
+<i class="fas fa-folder"></i>
+Projects
+</a>
+</li>
+<li>
+<a href="tasks.html"
+class="active">
+<i class="fas fa-list-check"></i>
+Tasks
+</a>
+</li>
+<li>
+<a href="kanban.html">
+<i class="fas fa-table-columns"></i>
+Kanban
+</a>
+</li>
+<li>
+<a href="analytics.html">
+<i class="fas fa-chart-pie"></i>
+Analytics
+</a>
+</li>
+<li>
+<a href="users.html">
+<i class="fas fa-users"></i>
+Team
+</a>
+</li>
+<li>
+<a href="#"
+onclick="toggleTheme()">
+<i class="fas fa-moon"></i>
+Dark Mode
+</a>
+</li>
+<li>
+<a href="#"
+onclick="logout()">
+<i class="fas fa-right-from-bracket"></i>
+Logout
+</a>
+</li>
+</ul>
+</aside>
+<!-- ================= MAIN ================= -->
+<main class="main-content">
+<!-- TOP BAR -->
+<div class="topbar">
+<h1>
+<i class="fas fa-list-check"></i>
+Task Management
+</h1>
+<div class="topbar-right">
+<button 
+class="icon-btn"
+aria-label="Notification">
+<i class="fas fa-bell"></i>
+</button>
+<button 
+class="icon-btn"
+onclick="toggleTheme()"
+aria-label="Theme">
+<i class="fas fa-moon"></i>
+</button>
+</div>
+</div>
+<div class="container">
+<!-- CREATE TASK -->
+<div class="card">
+<h2>
+<i class="fas fa-plus-circle"></i>
+Create New Task
+</h2>
+<form id="taskForm">
+<input
+type="text"
+id="title"
+placeholder="Enter Task Title"
+required
+>
+<select id="priority">
+<option value="Low">
+Low Priority
+</option>
+<option value="Medium">
+Medium Priority
+</option>
+<option value="High">
+High Priority
+</option>
+<option value="Critical">
+Critical Priority
+</option>
+</select>
+<select id="project"
+required>
+<option value="">
+Select Project
+</option>
+</select>
+<select id="assignee">
+<option value="">
+Assign User
+</option>
+</select>
+<input
+type="date"
+id="dueDate"
+>
+<textarea
+id="description"
+placeholder="Task Description"
+rows="4"
+></textarea>
+<button type="submit">
+<i class="fas fa-plus"></i>
+Add Task
+</button>
+</form>
+</div>
+<!-- SEARCH FILTER -->
+<div class="card">
+<h2>
+<i class="fas fa-filter"></i>
+Search & Filter
+</h2>
+<div class="filters">
+<input
+type="text"
+id="search"
+placeholder="Search tasks..."
+>
+<select id="filterPriority">
+<option value="All">
+All Priorities
+</option>
+<option value="Critical">
+Critical
+</option>
+<option value="High">
+High
+</option>
+<option value="Medium">
+Medium
+</option>
+<option value="Low">
+Low
+</option>
+</select>
+</div>
+</div>
+<!-- TASK TABLE -->
+<div class="card">
+<h2>
+<i class="fas fa-list"></i>
+All Tasks
+</h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr>
+<th>
+Title
+</th>
+<th>
+Priority
+</th>
+<th>
+Project
+</th>
+<th>
+Assigned
+</th>
+<th>
+Due Date
+</th>
+<th>
+Description
+</th>
+<th>
+Status
+</th>
+<th>
+Action
+</th>
+</tr>
+</thead>
+<tbody id="taskList">
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+</div>
+<script src="js/storage.js"></script>
 <script src="js/app.js"></script>
 <script src="js/task.js"></script>
 </body>
