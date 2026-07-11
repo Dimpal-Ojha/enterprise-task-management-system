@@ -2,112 +2,169 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Kanban Board</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/tasks.css">
-    <link rel="stylesheet" href="css/responsive.css">
+<title>Kanban Board - TaskFlow</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/dashboard.css">
+<link rel="stylesheet" href="css/tasks.css">
+<link rel="stylesheet" href="css/responsive.css">
 
 </head>
 
 <body>
 
-    <header>
-        <h1>Task Management System</h1>
-    </header>
+<div class="dashboard-layout">
+
+<aside class="sidebar">
+
+<div class="logo">
+<h2>TaskFlow</h2>
+</div>
+
+<ul>
+
+<li>
+<a href="dashboard.html">
+<i class="fas fa-chart-line"></i>
+Dashboard
+</a>
+</li>
+
+<li>
+<a href="projects.html">
+<i class="fas fa-folder"></i>
+Projects
+</a>
+</li>
+
+<li>
+<a href="tasks.html">
+<i class="fas fa-list-check"></i>
+Tasks
+</a>
+</li>
+
+<li>
+<a href="kanban.html">
+<i class="fas fa-table-columns"></i>
+Kanban
+</a>
+</li>
+
+<li>
+<a href="analytics.html">
+<i class="fas fa-chart-pie"></i>
+Analytics
+</a>
+</li>
+
+<li>
+<a href="users.html">
+<i class="fas fa-users"></i>
+Team
+</a>
+</li>
+
+<li>
+<a href="#" onclick="toggleTheme()">
+<i class="fas fa-moon"></i>
+Dark Mode
+</a>
+</li>
+
+<li>
+<a href="#" onclick="logout()">
+<i class="fas fa-right-from-bracket"></i>
+Logout
+</a>
+</li>
+
+</ul>
+
+</aside>
 
 
-    <nav>
-        <a href="index.html">
-            Home
-        </a>
+<main class="main-content">
 
-        <a href="dashboard.html">
-            Dashboard
-        </a>
 
-        <a href="tasks.html">
-            Tasks
-        </a>
+<div class="topbar">
 
-        <a href="projects.html">
-            Projects
-        </a>
+<h1>
+Kanban Board
+</h1>
 
-        <a href="kanban.html">
-            Kanban Board
-        </a>
 
-        <a href="#" onclick="logout()">
-            Logout
-        </a>
+<div class="topbar-right">
 
-    </nav>
+<button class="icon-btn">
+<i class="fas fa-bell"></i>
+</button>
+
+
+<button class="icon-btn" onclick="toggleTheme()">
+<i class="fas fa-moon"></i>
+</button>
+
+</div>
+
+</div>
 
 
 
-    <h1 class="page-title">
-        Kanban Board
-    </h1>
+<div class="board">
+
+
+<div class="column" data-status="To Do">
+
+<h2>
+To Do
+</h2>
+
+<div id="todo" class="task-container"></div>
+
+</div>
 
 
 
-    <div class="board">
+<div class="column" data-status="In Progress">
 
+<h2>
+In Progress
+</h2>
 
-        <div class="column"
-             data-status="To Do">
+<div id="progress" class="task-container"></div>
 
-            <h2>
-                To Do
-            </h2>
-
-            <div id="todo"
-                 class="task-container">
-            </div>
-
-        </div>
+</div>
 
 
 
-        <div class="column"
-             data-status="In Progress">
+<div class="column" data-status="Done">
 
-            <h2>
-                In Progress
-            </h2>
+<h2>
+Done
+</h2>
 
-            <div id="progress"
-                 class="task-container">
-            </div>
+<div id="done" class="task-container"></div>
 
-        </div>
+</div>
 
 
+</div>
 
 
-        <div class="column"
-             data-status="Done">
-
-            <h2>
-                Done
-            </h2>
-
-            <div id="done"
-                 class="task-container">
-            </div>
-
-        </div>
+</main>
 
 
-    </div>
+</div>
 
 
-
-    <script src="js/storage.js"></script>
+<script src="js/storage.js"></script>
 <script src="js/app.js"></script>
 <script src="js/kanban.js"></script>
 
