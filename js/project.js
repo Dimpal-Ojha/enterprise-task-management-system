@@ -1,19 +1,34 @@
-// Login Protection
+/* LOGIN PROTECTION */
+
 if(localStorage.getItem("loggedIn") !== "true"){
 
-    window.location.href = "login.html";
+    window.location.href="login.html";
 
 }
 
 
+/* ELEMENTS */
+
 const projectForm =
 document.getElementById("projectForm");
-
 
 const projectContainer =
 document.getElementById("projectContainer");
 
+const projectSearch =
+document.getElementById("projectSearch");
 
+const totalProjects =
+document.getElementById("totalProjects");
+
+const activeProjects =
+document.getElementById("activeProjects");
+
+const completedProjects =
+document.getElementById("completedProjects");
+
+
+/* DATA */
 
 let projects =
 JSON.parse(localStorage.getItem("projects")) || [];
@@ -26,46 +41,94 @@ JSON.parse(localStorage.getItem("tasks")) || [];
 
 renderProjects();
 
-
-
-// Create Project
-
-projectForm.addEventListener("submit", function(e){
-
-    e.preventDefault();
-
-
-    const projectName =
-    document.getElementById("projectName").value;
+updateProjectStats();
 
 
 
-    const project = {
+/* CREATE PROJECT */
 
-        id: Date.now(),
+projectForm.addEventListener(
+"submit",
+function(e){
 
-        name: projectName
-
-    };
-
-
-
-    projects.push(project);
+e.preventDefault();
 
 
-
-    localStorage.setItem(
-        "projects",
-        JSON.stringify(projects)
-    );
-
+const name =
+document.getElementById("projectName")
+.value
+.trim();
 
 
-    renderProjects();
+const status =
+document.getElementById("projectStatus")
+.value;
 
 
 
-    projectForm.reset();
+if(name===""){
+
+alert("Project name required");
+
+return;
+
+}
+
+
+
+const exists =
+projects.some(
+project =>
+project.name.toLowerCase()
+===
+name.toLowerCase()
+);
+
+
+
+if(exists){
+
+alert("Project already exists");
+
+return;
+
+}
+
+
+
+const project={
+
+id:Date.now(),
+
+name:name,
+
+status:status,
+
+createdAt:
+new Date()
+.toLocaleDateString()
+
+};
+
+
+
+projects.push(project);
+
+
+
+localStorage.setItem(
+"projects",
+JSON.stringify(projects)
+);
+
+
+
+projectForm.reset();
+
+
+renderProjects();
+
+updateProjectStats();
 
 
 });
@@ -74,71 +137,237 @@ projectForm.addEventListener("submit", function(e){
 
 
 
-// Display Projects
+/* RENDER PROJECTS */
+
 
 function renderProjects(){
 
 
-    projectContainer.innerHTML = "";
+projectContainer.innerHTML="";
 
 
 
-    projects.forEach(project => {
+let filteredProjects=[...projects];
 
 
 
-        const taskCount =
-        tasks.filter(
-            task =>
-            task.project === project.name
-        ).length;
+if(projectSearch){
+
+const search =
+projectSearch.value
+.toLowerCase();
+
+
+if(search){
+
+filteredProjects =
+filteredProjects.filter(
+project =>
+project.name
+.toLowerCase()
+.includes(search)
+);
+
+}
+
+}
 
 
 
-        projectContainer.innerHTML += `
 
 
-        <div class="project-card">
+if(filteredProjects.length===0){
 
 
-            <h2>
-                ${project.name}
-            </h2>
+projectContainer.innerHTML=`
+
+<div class="project-card">
+
+<h3>
+No Projects Found
+</h3>
+
+<p>
+Create a new project.
+</p>
+
+</div>
+
+`;
 
 
-            <p>
-                Total Tasks:
-                <strong>
-                    ${taskCount}
-                </strong>
-            </p>
+return;
 
-
-
-            <button onclick="editProject(${project.id})">
-
-                Edit
-
-            </button>
-
-
-
-            <button onclick="deleteProject(${project.id})">
-
-                Delete
-
-            </button>
+}
 
 
 
-        </div>
+
+filteredProjects.forEach(project=>{
 
 
-        `;
+const projectTasks =
+tasks.filter(
+task =>
+task.project===project.name
+);
 
 
 
-    });
+const total =
+projectTasks.length;
+
+
+
+const completed =
+projectTasks.filter(
+task =>
+task.status==="Done"
+).length;
+
+
+
+const progress =
+total===0
+?
+0
+:
+Math.round(
+(completed/total)*100
+);
+
+
+
+
+
+projectContainer.innerHTML+=`
+
+
+<div class="project-card">
+
+
+<h2>
+
+${project.name}
+
+</h2>
+
+
+
+<p>
+
+Status:
+
+<strong>
+
+${project.status}
+
+</strong>
+
+</p>
+
+
+
+<p>
+
+Created:
+
+${project.createdAt}
+
+</p>
+
+
+
+
+<p>
+
+Total Tasks:
+
+<strong>
+
+${total}
+
+</strong>
+
+</p>
+
+
+
+<p>
+
+Completed:
+
+<strong>
+
+${completed}
+
+</strong>
+
+</p>
+
+
+
+
+
+<div class="progress-bar">
+
+<div class="progress-fill"
+style="width:${progress}%">
+
+</div>
+
+</div>
+
+
+
+<p>
+
+Progress:
+
+<strong>
+${progress}%
+</strong>
+
+</p>
+
+
+
+
+<div class="project-actions">
+
+
+<button onclick="editProject(${project.id})">
+
+<i class="fas fa-edit"></i>
+
+Edit
+
+</button>
+
+
+
+<button onclick="deleteProject(${project.id})">
+
+<i class="fas fa-trash"></i>
+
+Delete
+
+</button>
+
+
+
+</div>
+
+
+
+</div>
+
+
+`;
+
+
+
+});
 
 
 }
@@ -147,74 +376,86 @@ function renderProjects(){
 
 
 
-// Edit Project
+
+/* EDIT PROJECT */
+
 
 function editProject(id){
 
 
-    const project =
-    projects.find(
-        project =>
-        project.id === id
-    );
+const project =
+projects.find(
+project =>
+project.id===id
+);
 
 
 
-    const newName =
-    prompt(
-        "Enter New Project Name",
-        project.name
-    );
+if(!project)
+return;
 
 
 
-    if(newName === null || newName.trim() === ""){
-
-        return;
-
-    }
-
-
-
-    // Update tasks project name also
-
-    tasks =
-    tasks.map(task => {
+const newName =
+prompt(
+"Enter new project name",
+project.name
+);
 
 
-        if(task.project === project.name){
 
-            task.project = newName;
-
-        }
-
-
-        return task;
-
-
-    });
+if(
+newName===null ||
+newName.trim()===""
+)
+return;
 
 
 
 
-    project.name = newName;
+const oldName =
+project.name;
 
 
 
-    localStorage.setItem(
-        "projects",
-        JSON.stringify(projects)
-    );
+tasks =
+tasks.map(task=>{
 
 
-    localStorage.setItem(
-        "tasks",
-        JSON.stringify(tasks)
-    );
+if(task.project===oldName){
+
+task.project=
+newName.trim();
+
+}
+
+
+return task;
+
+
+});
 
 
 
-    renderProjects();
+project.name =
+newName.trim();
+
+
+
+localStorage.setItem(
+"projects",
+JSON.stringify(projects)
+);
+
+
+localStorage.setItem(
+"tasks",
+JSON.stringify(tasks)
+);
+
+
+
+renderProjects();
 
 
 }
@@ -223,51 +464,130 @@ function editProject(id){
 
 
 
-// Delete Project
+
+/* DELETE PROJECT */
+
 
 function deleteProject(id){
 
 
-    const project =
-    projects.find(
-        project =>
-        project.id === id
-    );
+const project =
+projects.find(
+project =>
+project.id===id
+);
 
 
 
-    // Remove related tasks
-
-    tasks =
-    tasks.filter(
-        task =>
-        task.project !== project.name
-    );
+if(!project)
+return;
 
 
 
-    projects =
-    projects.filter(
-        project =>
-        project.id !== id
-    );
+
+if(
+!confirm(
+"Delete project and related tasks?"
+)
+)
+return;
 
 
 
-    localStorage.setItem(
-        "projects",
-        JSON.stringify(projects)
-    );
 
-
-    localStorage.setItem(
-        "tasks",
-        JSON.stringify(tasks)
-    );
+tasks =
+tasks.filter(
+task =>
+task.project!==project.name
+);
 
 
 
-    renderProjects();
+projects =
+projects.filter(
+project =>
+project.id!==id
+);
+
+
+
+
+localStorage.setItem(
+"projects",
+JSON.stringify(projects)
+);
+
+
+
+localStorage.setItem(
+"tasks",
+JSON.stringify(tasks)
+);
+
+
+
+renderProjects();
+
+updateProjectStats();
+
+
+}
+
+
+
+
+
+
+
+/* PROJECT STATS */
+
+
+function updateProjectStats(){
+
+
+if(!totalProjects)
+return;
+
+
+
+totalProjects.innerText =
+projects.length;
+
+
+
+activeProjects.innerText =
+projects.filter(
+project =>
+project.status==="Active"
+).length;
+
+
+
+completedProjects.innerText =
+projects.filter(
+project =>
+project.status==="Completed"
+).length;
+
+
+
+}
+
+
+
+
+
+
+/* SEARCH */
+
+
+if(projectSearch){
+
+
+projectSearch.addEventListener(
+"input",
+renderProjects
+);
 
 
 }
