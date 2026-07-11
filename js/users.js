@@ -1,162 +1,353 @@
+/* =========================
+   LOGIN PROTECTION
+========================= */
+
 if(localStorage.getItem("loggedIn") !== "true"){
 
-    window.location.href="login.html";
+    window.location.href =
+    "login.html";
 
 }
 
 
+/* =========================
+   ELEMENTS
+========================= */
 
 const userForm =
 document.getElementById("userForm");
-
 
 const userContainer =
 document.getElementById("userContainer");
 
 
+/* =========================
+   DATA
+========================= */
 
 let users =
-JSON.parse(localStorage.getItem("users")) || [];
+JSON.parse(
+    localStorage.getItem("users")
+) || [];
+
+let tasks =
+JSON.parse(
+    localStorage.getItem("tasks")
+) || [];
 
 
+/* =========================
+   INITIAL LOAD
+========================= */
 
 renderUsers();
 
 
+/* =========================
+   CREATE USER
+========================= */
 
 userForm.addEventListener(
-"submit",
-function(e){
+    "submit",
+    function(e){
+
+        e.preventDefault();
+
+        const name =
+        document
+        .getElementById("userName")
+        .value
+        .trim();
+
+        const email =
+        document
+        .getElementById("userEmail")
+        .value
+        .trim();
+
+        const role =
+        document
+        .getElementById("role")
+        .value;
 
 
-e.preventDefault();
+        const exists =
+        users.some(
+            user =>
+            user.email.toLowerCase()
+            === email.toLowerCase()
+        );
+
+        if(exists){
+
+            alert(
+                "Email already exists."
+            );
+
+            return;
+        }
 
 
+        const user = {
 
-const user = {
+            id: Date.now(),
 
-id: Date.now(),
+            name,
 
-name:
-document.getElementById("userName").value,
+            email,
 
+            role,
 
-email:
-document.getElementById("userEmail").value,
+            createdAt:
+            new Date()
+            .toLocaleDateString()
 
-
-role:
-document.getElementById("role").value
-
-
-};
+        };
 
 
-
-users.push(user);
-
+        users.push(user);
 
 
-localStorage.setItem(
-"users",
-JSON.stringify(users)
+        localStorage.setItem(
+            "users",
+            JSON.stringify(users)
+        );
+
+
+        renderUsers();
+
+        userForm.reset();
+
+    }
 );
 
 
-
-renderUsers();
-
-
-
-userForm.reset();
-
-
-});
-
-
-
-
-
+/* =========================
+   RENDER USERS
+========================= */
 
 function renderUsers(){
 
-
-userContainer.innerHTML="";
-
+    userContainer.innerHTML = "";
 
 
-users.forEach(user=>{
+    if(users.length === 0){
+
+        userContainer.innerHTML = `
+
+            <div class="user-card">
+
+                <h3>
+                    No Team Members Found
+                </h3>
+
+                <p>
+                    Create your first user.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+    }
 
 
-userContainer.innerHTML += `
+    users.forEach(user => {
+
+        const initials =
+        user.name
+        .split(" ")
+        .map(word => word[0])
+        .join("")
+        .toUpperCase();
 
 
-<div class="user-card">
+        const assignedTasks =
+        tasks.filter(
+            task =>
+            task.assignee ===
+            user.name
+        ).length;
 
 
-<h3>
-${user.name}
-</h3>
+        userContainer.innerHTML += `
 
+        <div class="user-card">
 
-<p>
-Email:
-${user.email}
-</p>
+            <div class="avatar">
 
+                ${initials}
 
-<p>
-Role:
-<strong>
-${user.role}
-</strong>
-</p>
+            </div>
 
+            <h3>
 
+                ${user.name}
 
-<button onclick="deleteUser(${user.id})">
+            </h3>
 
-Delete
+            <p>
 
-</button>
+                ${user.email}
 
+            </p>
 
+            <p>
 
-</div>
+                <span class="role-badge">
 
+                    ${user.role}
 
-`;
+                </span>
 
+            </p>
 
-});
+            <p>
 
+                Assigned Tasks:
+                <strong>
+
+                    ${assignedTasks}
+
+                </strong>
+
+            </p>
+
+            <p>
+
+                Joined:
+                ${user.createdAt}
+
+            </p>
+
+            <div class="user-actions">
+
+                <button
+                onclick="editUser(${user.id})">
+
+                    Edit
+
+                </button>
+
+                <button
+                onclick="deleteUser(${user.id})">
+
+                    Delete
+
+                </button>
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
 
 }
 
 
+/* =========================
+   EDIT USER
+========================= */
+
+function editUser(id){
+
+    const user =
+    users.find(
+        user =>
+        user.id === id
+    );
+
+    if(!user){
+
+        return;
+
+    }
 
 
+    const newName =
+    prompt(
+        "Enter New Name",
+        user.name
+    );
 
+    if(
+        newName === null ||
+        newName.trim() === ""
+    ){
+
+        return;
+
+    }
+
+
+    const newRole =
+    prompt(
+        "Enter Role",
+        user.role
+    );
+
+    if(
+        newRole === null ||
+        newRole.trim() === ""
+    ){
+
+        return;
+
+    }
+
+
+    user.name =
+    newName.trim();
+
+    user.role =
+    newRole.trim();
+
+
+    localStorage.setItem(
+        "users",
+        JSON.stringify(users)
+    );
+
+
+    renderUsers();
+
+}
+
+
+/* =========================
+   DELETE USER
+========================= */
 
 function deleteUser(id){
 
+    const confirmDelete =
+    confirm(
+        "Delete this user?"
+    );
 
-users =
-users.filter(
-user =>
-user.id !== id
-);
+    if(!confirmDelete){
 
+        return;
 
-
-localStorage.setItem(
-"users",
-JSON.stringify(users)
-);
+    }
 
 
+    users =
+    users.filter(
+        user =>
+        user.id !== id
+    );
 
-renderUsers();
 
+    localStorage.setItem(
+        "users",
+        JSON.stringify(users)
+    );
+
+
+    renderUsers();
 
 }
