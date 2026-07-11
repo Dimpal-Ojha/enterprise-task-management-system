@@ -1,83 +1,276 @@
+/* =====================================
+   TASK PAGE CONTAINER
+===================================== */
 .container{
-    padding:20px;
+    padding:25px;
 }
-
-form{
+/* =====================================
+   COMMON CARD DESIGN
+===================================== */
+.card{
+    background:white;
+    padding:25px;
+    border-radius:20px;
+    margin-bottom:25px;
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.08);
+    transition:.3s;
+}
+.card:hover{
+    transform:translateY(-3px);
+}
+.card h2{
     display:flex;
+    align-items:center;
     gap:10px;
-    flex-wrap:wrap;
     margin-bottom:20px;
+    font-size:22px;
+    color:#0f172a;
 }
-
+/* =====================================
+   TASK FORM
+===================================== */
+#taskForm{
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fit,minmax(220px,1fr));
+    gap:15px;
+}
 input,
 select,
-button{
-    padding:10px;
+textarea{
+    width:100%;
+    padding:13px 15px;
+    border-radius:12px;
+    border:1px solid #cbd5e1;
+    background:white;
+    font-size:14px;
+    outline:none;
+    transition:.3s;
 }
-
+textarea{
+    grid-column:1/-1;
+    resize:none;
+    min-height:100px;
+}
+input:focus,
+select:focus,
+textarea:focus{
+    border-color:#2563eb;
+    box-shadow:
+    0 0 0 4px rgba(37,99,235,.15);
+}
+#taskForm button{
+    background:
+    linear-gradient(
+    135deg,
+    #2563eb,
+    #1d4ed8
+    );
+    color:white;
+    border:none;
+    padding:14px;
+    border-radius:12px;
+    font-weight:600;
+    cursor:pointer;
+}
+#taskForm button:hover{
+    transform:translateY(-2px);
+}
+/* =====================================
+   FILTER SECTION
+===================================== */
 .filters{
     display:flex;
-    gap:10px;
-    margin:20px 0;
+    gap:15px;
+    flex-wrap:wrap;
 }
-
+.filters input,
+.filters select{
+    max-width:320px;
+}
+/* =====================================
+   TABLE
+===================================== */
+.table-wrapper{
+    width:100%;
+    overflow-x:auto;
+}
 table{
     width:100%;
     border-collapse:collapse;
     background:white;
+    border-radius:15px;
+    overflow:hidden;
 }
-
-table th,
-table td{
-    border:1px solid #ddd;
-    padding:12px;
-    text-align:left;
-}
-
-table th{
-    background:#f4f4f4;
-}
-
-button{
-    cursor:pointer;
-}
-
-.board{
-    display:flex;
-    gap:20px;
-    padding:20px;
-}
-
-.column{
-    flex:1;
-    background:#f4f4f4;
+thead th{
+    background:#0f172a;
+    color:white;
     padding:15px;
-    border-radius:10px;
-    min-height:500px;
+    text-align:left;
+    font-size:14px;
 }
-
-.task-card{
-    background:white;
-    padding:10px;
-    margin-bottom:10px;
+tbody td{
+    padding:15px;
+    border-bottom:
+    1px solid #e2e8f0;
+    color:#475569;
+}
+tbody tr:hover{
+    background:#f8fafc;
+}
+/* =====================================
+   ACTION BUTTONS
+===================================== */
+table button{
+    padding:8px 14px;
     border-radius:8px;
-    box-shadow:0 2px 5px rgba(0,0,0,0.1);
+    font-size:13px;
+    margin:3px;
+
+}
+table button:first-child{
+    background:#2563eb;
+}
+table button:last-child{
+    background:#dc2626;
+}
+/* =====================================
+   PRIORITY BADGES
+===================================== */
+.priority-critical,
+.priority-high,
+.priority-medium,
+.priority-low{
+    display:inline-block;
+    padding:5px 12px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:600;
+}
+.priority-critical{
+    color:#991b1b;
+    background:#fee2e2;
 }
 .priority-high{
-    color:red;
-    font-weight:bold;
+    color:#b91c1c;
+    background:#fecaca;
 }
-
 .priority-medium{
-    color:orange;
-    font-weight:bold;
+    color:#c2410c;
+    background:#fed7aa;
 }
-
 .priority-low{
-    color:green;
-    font-weight:bold;
+    color:#15803d;
+    background:#dcfce7;
+}
+/* =====================================
+   KANBAN BOARD
+===================================== */
+.board{
+    display:grid;
+    grid-template-columns:
+    repeat(3,1fr);
+    gap:25px;
+}
+.column{
+    background:#f8fafc;
+    padding:20px;
+    border-radius:20px;
+    min-height:600px;
+    box-shadow:
+    0 8px 20px rgba(0,0,0,.06);
+}
+.column h2{
+    text-align:center;
+    margin-bottom:20px;
+}
+.task-container{
+    min-height:500px;
+}
+/* =====================================
+   TASK CARD
+===================================== */
+.task-card{
+    background:white;
+    padding:18px;
+    border-radius:16px;
+    margin-bottom:15px;
+    border-left:5px solid #2563eb;
+    cursor:grab;
+    box-shadow:
+    0 5px 15px rgba(0,0,0,.08);
+}
+.task-card:hover{
+    transform:translateY(-4px);
 }
 
+.task-card h3{
+    margin-bottom:10px;
+    color:#111827;
+}
+.task-card p{
+    margin:6px 0;
+    color:#64748b;
+    font-size:14px;
+}
+/* =====================================
+   OVERDUE
+===================================== */
 .overdue{
-    background:#ffe5e5;
+    background:#fff1f2;
+    border-left-color:#dc2626;
+}
+/* =====================================
+   DARK MODE
+===================================== */
+body.dark-mode .card,
+body.dark-mode table,
+body.dark-mode .task-card{
+
+    background:#1e293b;
+    color:white;
+}
+body.dark-mode .card h2,
+body.dark-mode .task-card h3{
+    color:white;
+}
+body.dark-mode td{
+    color:#e2e8f0;
+}
+body.dark-mode .column{
+    background:#0f172a;
+}
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea{
+    background:#334155;
+    color:white;
+    border-color:#475569;
+
+}
+/* =====================================
+   RESPONSIVE
+===================================== */
+@media(max-width:1100px){
+.board{
+    grid-template-columns:1fr;
+}
+}
+@media(max-width:768px){
+.container{
+    padding:15px;
+}
+.card{
+    padding:18px;
+}
+#taskForm{
+    grid-template-columns:1fr;
+}
+table{
+    min-width:900px;
+}
+.task-card{
+    padding:15px;
+}
 }
