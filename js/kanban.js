@@ -1,11 +1,27 @@
+// =========================
+// LOGIN CHECK
+// =========================
+
 if(localStorage.getItem("loggedIn") !== "true"){
+
     window.location.href = "login.html";
+
 }
 
+
+// =========================
+// LOAD TASKS
+// =========================
 
 let tasks =
 JSON.parse(localStorage.getItem("tasks")) || [];
 
+console.log("Tasks Loaded:", tasks);
+
+
+// =========================
+// COLUMNS
+// =========================
 
 const todo =
 document.getElementById("todo");
@@ -20,21 +36,29 @@ document.getElementById("done");
 let draggedTaskId = null;
 
 
+// =========================
+// RENDER BOARD
+// =========================
 
 function renderBoard(){
 
+
     todo.innerHTML = "";
+
     progress.innerHTML = "";
+
     done.innerHTML = "";
 
 
-    tasks.forEach(task => {
+
+    tasks.forEach(task=>{
 
 
         const today =
         new Date()
         .toISOString()
         .split("T")[0];
+
 
 
         const isOverdue =
@@ -48,9 +72,10 @@ function renderBoard(){
         document.createElement("div");
 
 
-        card.classList.add(
-            "task-card"
-        );
+
+        card.className =
+        "task-card";
+
 
 
         if(isOverdue){
@@ -62,6 +87,7 @@ function renderBoard(){
         }
 
 
+
         card.draggable = true;
 
         card.dataset.id =
@@ -69,24 +95,29 @@ function renderBoard(){
 
 
 
-        let priorityClass = "";
+        let priorityClass =
+        "priority-low";
 
-        if(task.priority === "High"){
+
+
+        if(task.priority === "Critical"){
+
+            priorityClass =
+            "priority-critical";
+
+        }
+
+        else if(task.priority === "High"){
 
             priorityClass =
             "priority-high";
 
         }
+
         else if(task.priority === "Medium"){
 
             priorityClass =
             "priority-medium";
-
-        }
-        else{
-
-            priorityClass =
-            "priority-low";
 
         }
 
@@ -94,38 +125,52 @@ function renderBoard(){
 
         card.innerHTML = `
 
-            <h3>
-                ${task.title}
-            </h3>
+        <h3>
+        ${task.title}
+        </h3>
 
 
-            <p>
-                Project:
-                ${task.project || "-"}
+        <p>
+        <strong>Project:</strong>
+        ${task.project || "-"}
+        </p>
+
+
+        <p class="${priorityClass}">
+        <strong>Priority:</strong>
+        ${task.priority}
+        </p>
+
+
+        <p>
+        <strong>Due:</strong>
+        ${task.dueDate || "-"}
+        </p>
+
+
+        <p>
+        <strong>Assigned:</strong>
+        ${task.assignee || "Unassigned"}
+        </p>
+
+
+        <p>
+        ${task.description || ""}
+        </p>
+
+
+        ${
+            isOverdue
+            ?
+            `
+            <p class="priority-high">
+            ⚠️ OVERDUE
             </p>
+            `
+            :
+            ""
+        }
 
-
-            <p class="${priorityClass}">
-                Priority:
-                ${task.priority}
-            </p>
-
-
-            <p>
-                Due:
-                ${task.dueDate || "-"}
-            </p>
-
-
-            <p>
-                ${task.description || ""}
-            </p>
-
-
-            <p>
-                Status:
-                ${task.status}
-            </p>
 
         `;
 
@@ -166,27 +211,34 @@ function renderBoard(){
 
     });
 
+
 }
 
 
+
+// =========================
+// INITIAL LOAD
+// =========================
 
 renderBoard();
 
 
 
-
+// =========================
+// DRAG DROP
+// =========================
 
 const columns =
 document.querySelectorAll(".column");
 
 
 
-columns.forEach(column => {
+columns.forEach(column=>{
 
 
     column.addEventListener(
         "dragover",
-        (e)=>{
+        e=>{
 
             e.preventDefault();
 
@@ -218,6 +270,7 @@ columns.forEach(column => {
 
 
                 return task;
+
 
             });
 
