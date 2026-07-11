@@ -3,15 +3,23 @@
 
 <head>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
 
-    <title>Projects</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Projects - TaskFlow</title>
 
 
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/projects.css">
-    <link rel="stylesheet" href="css/responsive.css">
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+
+<link rel="stylesheet" href="css/style.css">
+
+<link rel="stylesheet" href="css/projects.css">
+
+<link rel="stylesheet" href="css/responsive.css">
+
 
 </head>
 
@@ -19,53 +27,242 @@
 <body>
 
 
-<header>
-
-    <h1>
-        Project Management
-    </h1>
-</header>
+<div class="dashboard-layout">
 
 
+<!-- Sidebar -->
+
+<aside class="sidebar">
 
 
-<nav>
+<div class="logo">
 
-    <a href="index.html">
-        Home
-    </a>
+<h2>
+TaskFlow
+</h2>
 
-    <a href="dashboard.html">
-        Dashboard
-    </a>
-
-    <a href="tasks.html">
-        Tasks
-    </a>
-
-    <a href="projects.html">
-        Projects
-    </a>
-
-    <a href="kanban.html">
-        Kanban Board
-    </a>
-
-    <a href="#" onclick="logout()">
-        Logout
-    </a>
-
-</nav>
+</div>
 
 
 
+<ul>
 
 
-<div class="container">
+<li>
+<a href="dashboard.html">
+
+<i class="fas fa-chart-line"></i>
+Dashboard
+
+</a>
+</li>
+
+
+
+<li>
+<a href="projects.html">
+
+<i class="fas fa-folder"></i>
+Projects
+
+</a>
+</li>
+
+
+
+
+<li>
+<a href="tasks.html">
+
+<i class="fas fa-list-check"></i>
+Tasks
+
+</a>
+</li>
+
+
+
+
+<li>
+<a href="kanban.html">
+
+<i class="fas fa-table-columns"></i>
+Kanban
+
+</a>
+</li>
+
+
+
+
+<li>
+<a href="analytics.html">
+
+<i class="fas fa-chart-pie"></i>
+Analytics
+
+</a>
+</li>
+
+
+
+
+<li>
+<a href="users.html">
+
+<i class="fas fa-users"></i>
+Team
+
+</a>
+</li>
+
+
+
+
+<li>
+<a href="#"
+onclick="toggleTheme()">
+
+<i class="fas fa-moon"></i>
+Dark Mode
+
+</a>
+</li>
+
+
+
+
+<li>
+<a href="#"
+onclick="logout()">
+
+<i class="fas fa-right-from-bracket"></i>
+Logout
+
+</a>
+</li>
+
+
+
+</ul>
+
+
+</aside>
+
+
+
+
+
+<!-- Main Content -->
+
+
+<main class="main-content">
+
+
+<div class="topbar">
+
+
+<h1>
+Project Management
+</h1>
+
+
+<div class="topbar-right">
+
+
+<button class="icon-btn">
+
+<i class="fas fa-bell"></i>
+
+</button>
+
+
+
+<button class="icon-btn"
+onclick="toggleTheme()">
+
+<i class="fas fa-moon"></i>
+
+</button>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<!-- Project Stats -->
+
+
+<div class="cards">
+
+
+<div class="card">
+
+<h3>
+Total Projects
+</h3>
+
+<p id="totalProjects">
+0
+</p>
+
+</div>
+
+
+
+
+<div class="card">
+
+<h3>
+Active Projects
+</h3>
+
+<p id="activeProjects">
+0
+</p>
+
+</div>
+
+
+
+
+
+<div class="card">
+
+<h3>
+Completed Projects
+</h3>
+
+<p id="completedProjects">
+0
+</p>
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+<!-- Create Project -->
+
+
+<div class="project-form-card">
 
 
 <h2>
-    Create Project
+Create New Project
 </h2>
 
 
@@ -81,8 +278,36 @@ required
 >
 
 
+
+<select id="projectStatus">
+
+
+<option value="Active">
+Active
+</option>
+
+
+<option value="Completed">
+Completed
+</option>
+
+
+<option value="On Hold">
+On Hold
+</option>
+
+
+</select>
+
+
+
+
 <button type="submit">
+
+<i class="fas fa-plus"></i>
+
 Add Project
+
 </button>
 
 
@@ -91,18 +316,44 @@ Add Project
 
 
 
+</div>
 
 
-<hr>
 
 
 
+
+
+<!-- Search -->
+
+
+<div class="filters">
+
+
+<input
+type="text"
+id="projectSearch"
+placeholder="Search Projects..."
+>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- Projects -->
+
+
+<div class="project-section">
 
 
 <h2>
-    Project List
+All Projects
 </h2>
-
 
 
 
@@ -120,11 +371,23 @@ class="project-container">
 
 
 
+</main>
+
+
+
+</div>
+
+
+
+
+
+
 
 <script src="js/storage.js"></script>
+
 <script src="js/app.js"></script>
+
 <script src="js/project.js"></script>
-<
 
 
 </body>
